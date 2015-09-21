@@ -15,6 +15,10 @@ mongoose.connect("mongodb://localhost/iotdb", function(err) {
     console.log("Successfully connected to mongodb");
 });
 
+// Loading DB models
+var user = require("./models/users"),
+    dataset = require("./models/datasets");
+
 // Load routes
 var routes = require("./routes/index");
 var users = require("./routes/users");
