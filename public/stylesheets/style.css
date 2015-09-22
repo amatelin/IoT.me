@@ -12,3 +12,12 @@
     margin-bottom: 2.5%;
     background-image: url("/images/logo.png");
 }
+
+.navbar-brand {
+    padding: 9px 15px;
+}
+
+.btn-link {
+    padding-top:5px;
+    padding-bottom: 5px;    
+}

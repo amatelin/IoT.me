@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    div.col-md-6
+        h1 Account settings
+        div.col-md-4
+            form(action="/users/#{user._id}/edit",method="post",name="updateUser")
+                div.form-group
+                    label(for="inputName") Username: 
+                    input#inputName.form-control(type="text", value="#{user.name}", name="username")
+                div.form-group
+                    label(for="inputNewPassword") New Password:
+                    input#inputNewPassword.form-control(type="password", placeholder="********", name="newPassword")
+                div.form-group
+                    label(for="inputNewPasswordBis") Confirm: 
+                    input#inputNewPasswordBis.form-control(type="password", placeholder="********", name="newPasswordConfirm")
+                input(type="hidden",value="PUT",name="_method")
+                button.btn.btn-success.pull-left(type="submit").
+                    Save changes
+            form(action="users/#{user._id}/", method="POST", name="deleteUser")
+                input(type="hidden", value="DELETE", name="_method")
+                button.btn.btn-danger.pull-right(type="submit") Delete account

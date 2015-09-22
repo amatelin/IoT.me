@@ -1,5 +1,45 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    div 
+        a.btn.btn-success(href="/datasets/new" role="button") New dataset
+    div.table-responsive 
+        h3 My datasets
+        table.table.table-hover.table-bordered 
+            thead
+                tr
+                    th Name
+                    th API keys
+                    th Created at
+                    th Last data received
+                    th Entries
+                    th
+            tbody
+                - each dataset, i in datasets
+                    tr  
+                        td
+                            h4= dataset.name
+                        td
+                            div.col-md-6
+                                strong Read: 
+                                | #{dataset.read_key}
+                            div.col-md-6
+                                strong Write: 
+                                | #{dataset.write_key}
+                        td
+                            p= dataset.created_at
+                        td
+                            p= dataset.last_entry_at
+                        td
+                            p= dataset.entries_number
+                        td
+                            div
+                                a.btn.btn-link(href="/datasets/#{dataset.index}") Show   
+                            div
+                                a.btn.btn-link(href="/datasets/#{dataset.index}/edit") Edit
+                            div
+                                form(action="/datasets/#{dataset._id}",method="POST")
+                                    input(type="hidden",value="DELETE",name="_method")
+                                    button.btn.btn-link(type="submit").
+                                        Delete
+                        
