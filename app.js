@@ -19,9 +19,10 @@ mongoose.connect("mongodb://localhost/iotdb", function(err) {
 var user = require("./models/users"),
     dataset = require("./models/datasets");
 
-// Load routes
+//  Loading routes
 var routes = require("./routes/index");
-var users = require("./routes/users");
+    users = require("./routes/users"),
+    datasets = require("./routes/datasets");
 
 // Start app
 var app = express();
@@ -59,6 +60,7 @@ app.use(methodOverride(function(req, res){
 // Register routes
 app.use("/", routes);
 app.use("/users", users);
+app.use("/datasets", datasets);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

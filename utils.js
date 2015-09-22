@@ -8,4 +8,12 @@ function authenticate(req, res, next) {
     }
 }
 
+// Helper used to generate unique index of 9 characters based on the current timestamp + a little randomness
+function uniqueIndex() {
+    var now = new Date();
+    var index = Math.floor(Math.random() * 10) + parseInt(now.getTime()).toString(36).toUpperCase();
+    return index;
+}
+
 exports.authenticate = authenticate;
+exports.uniqueIndex = uniqueIndex;
