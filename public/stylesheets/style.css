@@ -1,0 +1,14 @@
+.row {
+    margin: 0% 2% 2% 2%;
+}
+
+.landing-body {
+    margin-top: 10%;
+}
+
+.landing-logo {
+    height: 275px;
+    width: 275px;
+    margin-bottom: 2.5%;
+    background-image: url("/images/logo.png");
+}

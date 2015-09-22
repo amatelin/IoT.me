@@ -1,0 +1,14 @@
+extends ./landing
+
+block content
+            div.col-md-12
+                h1.text-center Setup
+                form#formSetup(name="setup",method="post",action="/setup")
+                    div.form-group
+                        label(for="inputUsername") Username: 
+                        input#inputUsername.form-control(type="text", placeholder="ex. John Smith", name="username")
+                    div.form-group
+                        label(for="inputPassword") Password:
+                        input#inputPassword.form-control(type="password", placeholder="ex. 123456", name="password")
+                    div.col-md-offset-5
+                        button#btnSubmit.btn.btn-success(type="submit") Create account
