@@ -1,0 +1,74 @@
+extends ../layout
+
+block content
+    h1=dataset.name
+    ul.list-unstyled 
+        li 
+            p 
+                strong Created at:
+                |  #{dataset.created_at}
+            p
+                strong Last entry at: 
+                |  #{dataset.last_entry_at}
+            p 
+                strong Entries number:
+                |  #{dataset.entries_number}
+
+    if dataset.data 
+        - each variable, i in dataset.data
+            div.col-md-6
+                if variable.name
+                    h3.text-center #{variable.name}
+                else 
+                    h3.text-center #{i}
+                canvas(id="#{i}_canvas", height="400px", width="800px")
+
+    script(type="text/javascript", src="/javascripts/Chart.min.js")
+    script.
+        // Unserialize dataset object so that we can interract with it from the script
+        var datasetObject =!{JSON.stringify(dataset)}
+        var data = datasetObject.data
+
+        // For each variable in the dataset, extract title, tag name and values
+        // then instanciate the chart with theses values
+        for (var property in data) {
+            if (data.hasOwnProperty(property)) {
+                var varTag = property;
+                var varData = data[property];
+                var label = varData.name;
+                var xLabels = [];
+                var yValues = [];
+
+                for (var i in varData.values) {
+                    // extract values
+                    yValues.push(varData.values[i][0]);
+                    // extract timestamp in a Date object and format the output in a string
+                    var t = new Date(varData.values[i][1]);
+                    var cleanTime = t.getDay() +"/"+ t.getMonth() + " " + t.getHours() + ":" + t.getMinutes()
+                    // add formated timestamp to the array holding values for x axis
+                    xLabels.push(cleanTime)
+                }
+            }
+
+            var chartData = {
+            labels: xLabels,
+            datasets: [
+                {
+                    label: label,
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: yValues
+                }
+            ]            
+            }
+
+            var ctx = document.getElementById(varTag+"_canvas").getContext("2d");
+
+            new Chart(ctx).Line(chartData, {
+                bezierCurve: false
+            });
+        }

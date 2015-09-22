@@ -1,0 +1,72 @@
+extends ../layout
+
+block content
+    div.col-md-6
+        h1=dataset.name
+        div.col-md-12
+            h2 Api Keys
+            div.col-md-6
+                h3 Read 
+                form(action="/datasets/update/key",method="POST")
+                    input(type="hidden",value="read",name="key")
+                    div.form-group
+                        input(type="hidden",value="#{dataset._id}",name="id")
+                        pre=dataset.read_key
+                        button#newReadKey.btn.btn-warning(role="submit") Regenerate
+            div.col-md-6
+                h3 Write
+                form(action="/datasets/update/key",method="POST")
+                    input(type="hidden",value="write",name="key")
+                    input(type="hidden",value="#{dataset._id}",name="id")
+                    pre=dataset.write_key
+                    button#newWriteKey.btn.btn-warning(role="submit") Regenerate
+        div.col-md-12
+            h2 Options
+            div.col-md-6
+                form(action="/datasets/#{dataset._id}",method="post",name="updateDataset")
+                    div.form-group
+                        label(for="inputName") Name: 
+                        input#inputName.form-control(type="text", value="#{dataset.name}", name="name")
+                    div.form-group
+                        label(for="inputPublic") Public: 
+                            input#inputPublic(type="checkbox", name="public", checked="#{dataset.public}")
+                    label Variables:
+                    ul#variablesList.list-unstyled
+                        script.
+                            var varId=1;
+                        if dataset.data
+                            - each variable, i in dataset.data
+                                script.
+                                    varId++
+                                li.variable-option  
+                                    button.btn.btn-link.delete-variable-btn 
+                                        span.glyphicon.glyphicon-minus-sign
+                                    |  Title: 
+                                    input.form-control.variable-input(type="text", value="#{variable.name}", name=i) 
+                                    |  tag: #{i} 
+                        li.add-variable
+                            button.btn.btn-link.add-variable-btn 
+                                span.glyphicon.glyphicon-plus-sign
+                    input(type="hidden",value="PUT",name="_method")
+                    button#btnSubmit.btn.btn-success(type="submit").
+                        Save changes
+
+block inPageScript
+    script.
+        // Add new variable input if add button clicked
+        $(".add-variable-btn").click(function(e) {
+            e.preventDefault(); // prevents button from submitting
+
+            var html = "<li class='variable-option'><button class='btn btn-link delete-variable-btn'><span class='glyphicon glyphicon-minus-sign'></span></button> Title: <input class='form-control variable-input', type='text', placeholder='variable%s', name='var%s'> tag: var%s</li>".replace(/%s/g, varId);
+            $(html).insertBefore(".add-variable")
+            varId++;
+        });
+        
+        // Delete variable input if delete button clicked
+        // We use the 'on' method here because otherwise newly inserted DOM elements wouldn't trigger
+        $(document).on("click", ".delete-variable-btn", function(e) {
+            e.preventDefault(); // prevents button from submitting
+
+            $(this).closest("li").remove();
+            varId--;
+        });

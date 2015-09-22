@@ -21,3 +21,54 @@
     padding-top:5px;
     padding-bottom: 5px;    
 }
+
+.list-unstyled { 
+    padding-left: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#variablesList {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.variable-option {
+    margin-top: 15px;
+}
+
+.variable-input {
+    display: inline;
+    width: 50%;
+}
+
+.delete-variable-btn {
+    color: #D67C7C;
+    padding-right: 2px;
+    padding-left: 2px;
+    font-size: 20px;
+}
+
+.delete-variable-btn:hover, 
+.delete-variable-btn:active, 
+.delete-variable-btn:focus {
+    color: #CE4343;
+}
+
+.add-variable {
+    text-align: center;
+}
+
+.add-variable-btn {
+    color: #88D67C;
+    padding-right: 2px;
+    padding-left: 2px;
+    margin-right:15%;
+    font-size: 25px;
+}
+
+.add-variable-btn:hover, 
+.add-variable-btn:active,
+.add-variable-btn:focus {
+    color: #4AAF3A;
+}

@@ -20,7 +20,7 @@ router.get("/update", function(req, res) {
         if (err) {
             console.log("Error retrieving dataset: " + err);
             res.sendStatus(-1);
-        } else if (dataset) {
+        } else if (dataset.data) {
             // build $push query with variables passed in POST request
             // we check that the variable have already been registered otherwise they"ll be ignored
             for (var property in req.query) {
@@ -41,7 +41,7 @@ router.get("/update", function(req, res) {
                 }
             });
         } else {
-            console.log("No dataset found for this API key: " + apiKey);
+            console.log("Either no dataset was found for this API key: " + apiKey + " or the dataset doesn't have any variables set");
             res.sendStatus(0);
         }
     });
@@ -220,7 +220,7 @@ router.put("/:id/", helper.authenticate, function(req, res) {
         }
 
         // Update dataset
-        dataset.update(updateQuery, function(err, dataset) {
+        dataset.update(updateQuery, function(err, response) {
             if (err) {
                 console.log("Error updating dataset: " + err);
                 req.session.error = "Update failed, please try again.";
