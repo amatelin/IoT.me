@@ -8,21 +8,18 @@ router.get("/", function(req, res) {
 });
 
 router.get("/twitter/search", function(req, res) {
-    var query = req.query.q;
+    var query = req.query.query;
     console.log(query);
-    twitter.search(query, function() {
-        res.send("ok");
+    twitter.search(query, function(response) {
+        res.json(response);
     });
-
-    // query =
 });
 
-router.get("/twitter/test", function(req, res) {
-    twitter.test(function() {
-        res.send("ok");
+router.get("/twitter/geoSearch", function(req, res) {
+    var query = req.query.query
+    twitter.geoSearch(query, function(response) {
+        res.json(response);
     });
-
-    // query =
 });
 
 module.exports = router;
