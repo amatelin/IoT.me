@@ -22,7 +22,8 @@ var user = require("./models/users"),
 //  Loading routes
 var routes = require("./routes/index");
     users = require("./routes/users"),
-    datasets = require("./routes/datasets");
+    datasets = require("./routes/datasets"),
+    apis = require("./routes/apis");
 
 // Start app
 var app = express();
@@ -61,6 +62,7 @@ app.use(methodOverride(function(req, res){
 app.use("/", routes);
 app.use("/users", users);
 app.use("/datasets", datasets);
+app.use("/apis", apis);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
