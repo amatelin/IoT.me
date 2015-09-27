@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+    div.col-md-3
+        h1 New client
+        form#formAddClient(name="addClient", method="post", action="/clients")
+            div.form-group
+                label(for="inputName") Name:
+                input#inputName.form-control(type="text", placeholder="ex: Spark core 1", name="name")
+            div.form-group
+                select.form-control(name="payloadApi")
+                    - each i, api in apis_list
+                        option #{api}
+            div.form-group
+                select.form-control()
+                    - each i, api in apis_list["twitter"]
+                        option #{api}
+            div.form-group
+                input#inputOptions.form-control(type="text", name="payloadOption")
+
+
+            button#btnSubmit.btn.btn-success(type="submit").
+                Create
+
+
+block inPageScript
+    script.

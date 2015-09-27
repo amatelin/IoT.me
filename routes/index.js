@@ -3,7 +3,7 @@ var express = require("express"),
     helper = require("../utils"),
     mongoose = require("mongoose"),
     User = mongoose.model("User"),
-    Dataset = mongoose.model("Dataset");
+    Client = mongoose.model("Client");
 
 /* Views controllers */
 // GET landing page
@@ -56,14 +56,14 @@ router.get("/index", helper.authenticate, function(req, res, next) {
     delete req.session.success;
 
     // Find datasets documents owned by the current session user
-    Dataset.find({owner_name: sessionUser}, function(err, datasets) {
+    Client.find({}, function(err, clients) {
         if (err) {
             console.log("Error retrieving datasets: " + err);
             errorMessage = "A problem occured retrieving the datasets";
-            res.render("index", {datasets: {},
+            res.render("index", {clients: {},
                                 errorMessage: errorMessage});
         } else { 
-            res.render("index", {datasets: datasets,
+            res.render("index", {clients: clients,
                                 errorMessage: errorMessage,
                                 successMessage: successMessage});
         }

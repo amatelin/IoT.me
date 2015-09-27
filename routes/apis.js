@@ -9,8 +9,9 @@ router.get("/", function(req, res) {
 
 router.get("/twitter/search", function(req, res) {
     var query = req.query.query;
+    var geocode = req.query.geocode
     console.log(query);
-    twitter.search(query, function(response) {
+    twitter.search(query, geocode, function(response) {
         res.json(response);
     });
 });
@@ -21,5 +22,13 @@ router.get("/twitter/geoSearch", function(req, res) {
         res.json(response);
     });
 });
+
+router.get("/twitter/timeline", function(req, res) {
+    var query = req.query.query
+    twitter.userTimeline(query, function(response) {
+        res.json(response);
+    });
+});
+
 
 module.exports = router;

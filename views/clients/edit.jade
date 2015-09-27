@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+    div.col-md-6
+        h1=client.name
+        div.col-md-12
+            h2 Api Key
+            div.col-md-6
+                form(action="/clients/update_key",method="POST")
+                    input(type="hidden",value="read",name="key")
+                    div.form-group
+                        input(type="hidden",value="#{client._id}",name="id")
+                        pre=client.api_key
+                        button#newKey.btn.btn-warning(role="submit") Regenerate
+         div.col-md-12
+            h2 Payload
+            div.col-md-6
+                form(action="/clients/#{client._id}",method="post",name="updateClient")
+                    div.form-group
+                        label(for="inputName") Name: 
+                        input#inputName.form-control(type="text", value="#{client.name}", name="name")
+                    input(type="hidden",value="PUT",name="_method")
+                    button#btnSubmit.btn.btn-success(type="submit").
+                        Save changes
+        div.col-md-12
+            h2 Options
+            div.col-md-6
+                form(action="/clients/#{client._id}",method="post",name="updateClient")
+                    div.form-group
+                        label(for="inputName") Name: 
+                        input#inputName.form-control(type="text", value="#{client.name}", name="name")
+                    input(type="hidden",value="PUT",name="_method")
+                    button#btnSubmit.btn.btn-success(type="submit").
+                        Save changes
+
