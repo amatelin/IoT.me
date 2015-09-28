@@ -1,1 +1,2 @@
-exports.twitter = require("./twitter")
+exports.twitter = require("./interfaces/twitter");
+exports.test = {somemethod: function(){}};

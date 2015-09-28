@@ -1,5 +1,5 @@
 var Twitter = require("twitter"),
-    config = require("../config");
+    config = require("../../config");
 
 var client = new Twitter(config.twitter);
 
@@ -28,28 +28,8 @@ exports.userTimeline = function(text, next) {
     var params = {screen_name: text}; 
     client.get('statuses/user_timeline.json', params, function(error, tweets, response){
         if (!error) {
-            // console.log(tweets);
-            for (i in tweets) {
-                console.log(tweets[i]["text"]);
-                console.log(tweets[i]["entities"]["hashtags"]);
-            }
             next(tweets);
         }
     });
 }
-
-exports.findColorCode = function(text, next) {
-    var params = {screen_name: text}; 
-    client.get('statuses/user_timeline.json', params, function(error, tweets, response){
-        if (!error) {
-            // console.log(tweets);
-            for (i in tweets) {
-                console.log(tweets[i]["text"]);
-                console.log(tweets[i]["entities"]["hashtags"]);
-            }
-            next(tweets);
-        }
-    });
-}
-
 

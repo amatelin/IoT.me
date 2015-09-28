@@ -18,10 +18,27 @@ router.get("/:id/edit", function(req, res) {
     });
 });
 
+router.get("/payload", function(req, res) {
+    var api_key = req.query.key;
+
+    Client.findOne({api_key: api_key}, function(err, client) {
+        var api_provider = Object.keys(client.payload)[0]
+        var api_method = client.payload[api_provider].method
+        var api_method_options = client.payload[api_provider].option.split(";")
+
+        apis[api_provider][api_method](api_method_options[0], api_method_options[1], function(code) {
+            res.json(code);
+        })
+
+
+    });
+});
+
 /* CRUD API */
 // Create - POST
 router.post("/", function(req, res, next) {
     // Get values from POST request
+    console.log(req.body)
     var name = req.body.name;
     var api = req.body.payloadApi;
     var apiMethod = req.body.payloadMethod;
@@ -32,33 +49,33 @@ router.post("/", function(req, res, next) {
     payload[api].method = apiMethod;
     payload[api].option = apiOption;
 
-    // Create new user document
+    // Create new client document
     Client.create({
         name: name, 
         api_key: hat(),
         owner_name: req.session.user.name,
         payload: payload
-    }, function(err, user) {
+    }, function(err, client) {
         if (err) {
-            console.log("Error creating new user: " + err);
-            res.send("Error creating new user.");
+            console.log("Error creating new client: " + err);
+            res.send("Error creating new client.");
         } else {
-            console.log("POST creating new user: " + user);
-            res.json(user);
+            console.log("POST creating new client: " + client);
+            res.redirect("index");
         }
     })
 });
 
 // Retreive by ID - GET
 router.get("/:id", function(req, res){
-    // Find user document by id
-    Client.findById(req.params.id, function(err, user){
+    // Find client document by id
+    Client.findById(req.params.id, function(err, client){
         if (err) {
-            console.log("Error retrieving user " + err);
-            res.send("Error retrieving user.");
+            console.log("Error retrieving client " + err);
+            res.send("Error retrieving client.");
         } else {
-            console.log("GET user with ID: " + user._id);
-            res.json(user);
+            console.log("GET client with ID: " + client._id);
+            res.json(client);
         }
     });
 });
@@ -66,30 +83,30 @@ router.get("/:id", function(req, res){
 // Update by ID - PUT
 router.put("/:id/edit", function(req, res) {
     // Get form values
-    var newUsername = req.body.username;
+    var newclientname = req.body.clientname;
     var newPassword = req.body.newPassword;
     var newPasswordBis = req.body.newPasswordConfirm;
     
     var passError = null;
 
     if (!passError) {
-        //find user document by ID
+        //find client document by ID
         Client.findById(req.params.id, function(err, client) {
             if (err) {
-                console.log("Error retrieving user " + err);
-                req.session.error = "A problem occured retrieving the user.";
+                console.log("Error retrieving client " + err);
+                req.session.error = "A problem occured retrieving the client.";
                 res.redirect("/settings");
             } else {
 
                 // Save is used instead of update so that the hashing middleware is called on the password
-                client.save(user, function(err, userID) {
+                client.save(client, function(err, clientID) {
                     if (err) {
-                        console.log("Error updating user: " + err);
-                        req.session.error = "A problem occured updating the user.";
+                        console.log("Error updating client: " + err);
+                        req.session.error = "A problem occured updating the client.";
                         res.redirect("/settings");
                     } else {
-                        console.log("UPDATE user with id: " + userID);
-                        // Regenerate session with new user info
+                        console.log("UPDATE client with id: " + clientID);
+                        // Regenerate session with new client info
                         res.redirect("/index"); 
                     }                      
                 });               
@@ -101,25 +118,22 @@ router.put("/:id/edit", function(req, res) {
 
 // Delete by ID - DELETE
 router.delete("/:id", function(req, res) {
-    // Find user document by id
-    User.findById(req.params.id, function(err, user){
+    // Find client document by id
+    Client.findById(req.params.id, function(err, client){
         if (err) {
-            console.log("Error retrieving user " + err);
-            req.session.error = "A problem occured retrieving the user.";
-            res.redirect("/settings");
+            console.log("Error retrieving client " + err);
+            req.session.error = "A problem occured retrieving the client.";
+            res.redirect("/index");
         } else {
-            // Remove user document
-            Client.remove(function(err, user){
+            // Remove client document
+            client.remove(function(err, client){
                 if (err) {
-                    console.log("Error deleting the user " + err);
-                    req.session.error = "A problem occured deleting the user.";
-                    res.redirect("/settings");
+                    console.log("Error deleting the client " + err);
+                    req.session.error = "A problem occured deleting the client.";
+                    res.redirect("/index");
                 } else {
-                    console.log("DELETE user with ID: " + user._id);
-                    req.session.regenerate(function() {
-                        req.session.success = "Account successfully deleted";
-                        res.redirect("/setup");
-                    })
+                    console.log("DELETE client with ID: " + client._id);
+                    res.redirect("/index");
                 }
             });
         }
