@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "async": "^1.4.2",
     "bcrypt": "^0.8.5",
     "body-parser": "~1.13.2",
     "connect-mongo": "^0.8.2",

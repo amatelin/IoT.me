@@ -4,6 +4,7 @@ var express = require("express"),
     mongoose = require("mongoose"),
     Client = mongoose.model("Client"),
     hat = require("hat"),
+    async = require("async"),
     apis = require("../apis/index");
 
 
@@ -26,11 +27,21 @@ router.get("/payload", function(req, res) {
         var api_method = client.payload[api_provider].method
         var api_method_options = client.payload[api_provider].option.split(";")
 
-        apis[api_provider][api_method](api_method_options[0], api_method_options[1], function(code) {
-            res.json(code);
-        })
-
-
+        async.parallel([
+            function(callback) {
+                apis[api_provider][api_method](api_method_options[0], api_method_options[1], function(code) {
+                    callback(null, code)
+                });
+            }, 
+            function(callback) {
+                callback(null, "test");
+            } 
+            ], function(err, results) {
+                var outJson = {"twitter":{"color":results[0]},
+                                "test": []}
+                res.json(outJson);
+            }
+        );
     });
 });
 
