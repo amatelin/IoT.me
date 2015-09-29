@@ -37,9 +37,11 @@ router.get("/payload", function(req, res) {
                 callback(null, "test");
             } 
             ], function(err, results) {
-                var outJson = {"twitter":{"color":results[0]},
-                                "test": []}
-                res.json(outJson);
+                outString = "";
+                for (i in results) {
+                    outString += results[i];
+                }
+                res.json(results);
             }
         );
     });
